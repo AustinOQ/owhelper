@@ -1,32 +1,34 @@
 
 import time
 import pyautogui
-from playerfound import *
-
+import sys
+sys.path.append('/path/to/opencv/installation')
+import cv2
+import numpy as np
+def playerFound(given):
+    # Load the pre-trained human detection model (HOG-based)
+    hog = cv2.HOGDescriptor()
+    hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+    image=cv2.cvtColor(np.array(given), cv2.COLOR_RGB2BGR)
+    # Detect humans in the image
+    boxes, _ = hog.detectMultiScale(image)
+    if len(boxes) > 0:
+        # Check if any human is in the center of the screen
+        image_height, image_width, _ = image.shape
+        center_x = image_width // 2
+        center_y = image_height // 2
+        for (x, y, w, h) in boxes:
+            if (x+w*.1) <= center_x <= x + w and y <= center_y <= y + (h*.9):
+                return True
+    return False
 # Function to capture and save a screenshot
 def capture_screenshot():
-  
-
     while True:
         # Capture the screenshot
         screenshot = pyautogui.screenshot()
-
-        # Save the screenshot to the working directory
-       
-
-        print(f'Screenshot captured and saved as screenshot.png')
-
-        
-
         if(playerFound(screenshot)):
-            
-            screenshot.save(f'screenshot.png')
+            pyautogui.click(button='left')
+        time.sleep(.001)
+          
        
-        
-
-        # Wait for 1 second before capturing the next screenshot
-        time.sleep(5)
-
-# Call the function to start capturing screenshots
 capture_screenshot()
-
