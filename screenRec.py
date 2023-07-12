@@ -1,19 +1,32 @@
+
 import time
 import pyautogui
 from playerfound import *
 
-def main():
+# Function to capture and save a screenshot
+def capture_screenshot():
+  
+
     while True:
-        # Capture the screen and store it in a variable
+        # Capture the screenshot
         screenshot = pyautogui.screenshot()
 
-        #left click if in hitbox
-        if playerFound(screenshot):
-            pyautogui.click(button='left')
-            # Add a delay to avoid continuous clicks
-            time.sleep(0.5)
+        # Save the screenshot to the working directory
+       
 
+        print(f'Screenshot captured and saved as screenshot.png')
 
-        # Wait for 5 second before updating the screenshot
-        #this will help not eat too much 
+        
+
+        if(playerFound(screenshot)):
+            
+            screenshot.save(f'screenshot.png')
+       
+        
+
+        # Wait for 1 second before capturing the next screenshot
         time.sleep(5)
+
+# Call the function to start capturing screenshots
+capture_screenshot()
+
